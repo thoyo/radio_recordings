@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+  radio_recordings:
+    image: radio_recordings:0.0.1
+    networks:
+      - private
+    stdin_open: true
+    tty: true
+    restart: always
+
+networks:
+  private:

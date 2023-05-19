@@ -64,13 +64,13 @@ def job():
         time.sleep(10)
 
     for ts in ts_list:
-        subprocess.call(['ffmpeg', '-y', '-i', ts, f"{ts.split('/')[-1]}.mp3"],
+        subprocess.call(['ffmpeg', '-y', '-i', ts, f"data/{ts.split('/')[-1]}.mp3"],
                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    concatenate_mp3_files([f"{ts.split('/')[-1]}.mp3" for ts in ts_list], "data/out.mp3")
+    concatenate_mp3_files([f"data/{ts.split('/')[-1]}.mp3" for ts in ts_list], "data/out.mp3")
 
     loop = asyncio.get_event_loop()
-    tasks = [loop.create_task(bot.send_audio(CHAT_ID, "out.mp3"))]
+    tasks = [loop.create_task(bot.send_audio(CHAT_ID, "data/out.mp3"))]
     loop.run_until_complete(asyncio.wait(tasks))
 
     os.system("rm -v data/*")
