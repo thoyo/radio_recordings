@@ -17,16 +17,14 @@ logging.basicConfig(format="%(asctime)s %(levelname)-8s %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S")
 logging.info("Starting program")
 
-START_TIME = "06:00"
-DURATION_MINUTES = 10  # 10
-m3u8_file = 'data/rne_r3_main.m3u8'  # Replace with the desired output file path
+START_TIME = os.getenv("START_TIME")
+DURATION_MINUTES = os.getenv("DURATION_MINUTES")
+m3u8_file = 'data/rne_r3_main.m3u8'
 
 load_dotenv()
 
-# Replace TOKEN with your own Telegram API token
 bot = Bot(os.getenv("TELEGRAM_TOKEN"))
 
-# Replace CHAT_ID with the chat ID of the chat you want to send the image to
 CHAT_ID = os.getenv("TELEGRAM_CHAT")
 
 
@@ -73,7 +71,7 @@ def job():
                 logging.info(f"Converting segment {ts} to mp3")
                 subprocess.call(['ffmpeg', '-y', '-i', ts, f"data/{ts.split('/')[-1]}.mp3"],
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        logging.info(f"Segment {ts} converted to mp3")
+                logging.info(f"Segment {ts} converted to mp3")
         if (datetime.datetime.now() - start).total_seconds() / 60 > DURATION_MINUTES:
             break
         time.sleep(10)
@@ -98,4 +96,4 @@ else:
     schedule.every().day.at(START_TIME).do(job)
     while True:
         schedule.run_pending()
-        time.sleep(60)  # wait one minute
+        time.sleep(60)
