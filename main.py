@@ -17,14 +17,13 @@ logging.basicConfig(format="%(asctime)s %(levelname)-8s %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S")
 logging.info("Starting program")
 
-START_TIME = os.getenv("START_TIME")
-DURATION_MINUTES = os.getenv("DURATION_MINUTES")
 m3u8_file = 'data/rne_r3_main.m3u8'
 
 load_dotenv()
 
+START_TIME = os.getenv("START_TIME")
+DURATION_MINUTES = float(os.getenv("DURATION_MINUTES"))
 bot = Bot(os.getenv("TELEGRAM_TOKEN"))
-
 CHAT_ID = os.getenv("TELEGRAM_CHAT")
 
 
