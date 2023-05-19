@@ -12,8 +12,8 @@ import asyncio
 from dotenv import load_dotenv
 
 START_TIME = "06:00"
-DURATION_MINUTES = 10
-m3u8_file = 'rne_r3_main.m3u8'  # Replace with the desired output file path
+DURATION_MINUTES = 0.1  # 10
+m3u8_file = 'data/rne_r3_main.m3u8'  # Replace with the desired output file path
 
 load_dotenv()
 
@@ -67,12 +67,13 @@ def job():
         subprocess.call(['ffmpeg', '-y', '-i', ts, f"{ts.split('/')[-1]}.mp3"],
                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    concatenate_mp3_files([f"{ts.split('/')[-1]}.mp3" for ts in ts_list], "out.mp3")
+    concatenate_mp3_files([f"{ts.split('/')[-1]}.mp3" for ts in ts_list], "data/out.mp3")
 
     loop = asyncio.get_event_loop()
     tasks = [loop.create_task(bot.send_audio(CHAT_ID, "out.mp3"))]
     loop.run_until_complete(asyncio.wait(tasks))
 
+    os.system("rm -v data/*")
 
 if sys.argv[1] == "manual":
     job()
