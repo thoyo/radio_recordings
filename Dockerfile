@@ -16,5 +16,5 @@ RUN apt-get -y install ffmpeg
 RUN pip install -r $RADIO_RECORDINGS/requirements.txt
 
 WORKDIR $RADIO_RECORDINGS
-CMD ["python", "-u", "main.py", "manual"]
-# CMD ["python", "-u", "main.py", "automatic"]
+# CMD ["python", "-u", "main.py", "manual"]
+CMD ["python", "-u", "main.py", "automatic"]
