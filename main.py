@@ -56,7 +56,7 @@ def job():
     logging.info(f"Starting job at {start}")
 
     ts_list = []
-    url = os.getenv("M3U8_URL")
+    url = os.getenv("M3U8URL")
     while True:
         logging.info("Retrieving m3u8 file")
         download_file(url, m3u8_file)
