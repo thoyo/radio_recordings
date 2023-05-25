@@ -17,7 +17,7 @@ logging.basicConfig(format="%(asctime)s %(levelname)-8s %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S")
 logging.info("Starting program")
 
-m3u8_file = 'data/rne_r3_main.m3u8'
+m3u8_file = 'data/out.m3u8'
 
 load_dotenv()
 
@@ -56,9 +56,8 @@ def job():
     logging.info(f"Starting job at {start}")
 
     ts_list = []
+    url = os.getenv("M3U8_URL")
     while True:
-        url = 'https://rtvelivestream.akamaized.net/rtvesec/rne/rne_r3_main.m3u8'  # Replace with the URL of the file you want to download
-
         logging.info("Retrieving m3u8 file")
         download_file(url, m3u8_file)
         logging.info("m3u8 file retrieved")
@@ -87,12 +86,18 @@ def job():
 
     logging.info("Deleting data")
     os.system("rm -v data/*")
+    logging.info("Data deleted")
 
+
+if len(sys.argv) != 2 or sys.argv[1] not in ["manual", "automatic"]:
+    logging.error("Usage: `python main.py automatic` for execution at the `START_TIME` in .env, or "
+                  "`python main.py manual` to be executed now")
 
 if sys.argv[1] == "manual":
     job()
-else:
+elif sys.argv[1] == "automatic":
     schedule.every().day.at(START_TIME).do(job)
     while True:
         schedule.run_pending()
+        logging.info("Go sleep")
         time.sleep(60)
