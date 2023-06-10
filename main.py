@@ -74,13 +74,14 @@ def job():
             break
         time.sleep(10)
 
+    filename = str(start)[:19].replace("-", "_").replace(":", "_").replace(" ", "_")
     logging.info("Concatenating full mp3 file")
-    concatenate_mp3_files([f"data/{ts.split('/')[-1]}.mp3" for ts in ts_list], "data/out.mp3")
+    concatenate_mp3_files([f"data/{ts.split('/')[-1]}.mp3" for ts in ts_list], f"data/{filename}.mp3")
     logging.info("Full file concatenated")
 
     logging.info("Sending file to Telegram")
     loop = asyncio.get_event_loop()
-    tasks = [loop.create_task(bot.send_audio(CHAT_ID, "data/out.mp3"))]
+    tasks = [loop.create_task(bot.send_audio(CHAT_ID, f"data/{filename}.mp3"))]
     loop.run_until_complete(asyncio.wait(tasks))
     logging.info("File sent to Telegram")
 
